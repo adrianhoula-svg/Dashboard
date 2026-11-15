@@ -56,6 +56,20 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .it .x{margin-left:auto;padding-left:14px}
 textarea{width:100%;height:96px;background:none;border:0;color:#e9eef5;font:inherit;font-size:19px;resize:none;outline:0}
 .empty{color:#7d8da3;font-size:16px;padding:6px 0}
+.hrs{display:grid;grid-template-columns:repeat(6,1fr);grid-gap:8px}
+.hr{text-align:center;font-size:17px;color:#c9d4e3;padding:12px 2px;border-radius:16px;background:rgba(255,255,255,.04)}
+.hr b{display:block;font-weight:500;font-size:13px;color:#7d8da3;letter-spacing:.06em}
+.hr .i{display:block;font-size:26px;margin:8px auto;color:#8cc8ff}
+.hr em{display:block;font-style:normal;font-size:13px;color:#7d8da3;margin-top:3px}
+#stats{display:grid;grid-template-columns:repeat(3,1fr);grid-gap:10px;margin-top:12px}
+.st{padding:12px 6px;text-align:center;border-radius:16px;background:rgba(255,255,255,.04)}
+.st .i{display:block;font-size:24px;color:#8cc8ff;margin:0 auto 6px}
+.st b{display:block;font-weight:500;font-size:16px}
+.st span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7d8da3}
+#hol{display:flex;align-items:center;margin-top:16px;font-size:17px;color:#c9d4e3}
+#hol .i{margin-right:10px;color:#8cc8ff;font-size:22px}
+#amf{width:100%;height:380px;border:0;border-radius:14px;display:none;margin-top:6px}
+a.chip{text-decoration:none}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-17.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
@@ -82,6 +96,13 @@ textarea{width:100%;height:96px;background:none;border:0;color:#e9eef5;font:inhe
 <symbol id="music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
 <symbol id="note" viewBox="0 0 24 24"><path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5zM15 3v6h6"/></symbol>
 <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="sunrise" viewBox="0 0 24 24"><path d="M12 2v8m-7.07.93 1.41 1.41M2 18h2m16 0h2m-2.93-7.07-1.41 1.41M22 22H2M8 6l4-4 4 4M16 18a4 4 0 0 0-8 0"/></symbol>
+<symbol id="sunset" viewBox="0 0 24 24"><path d="M12 10V2m-7.07 8.93 1.41 1.41M2 18h2m16 0h2m-2.93-7.07-1.41 1.41M22 22H2m14-16-4 4-4-4M16 18a4 4 0 0 0-8 0"/></symbol>
+<symbol id="wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2m15.5-8a2.5 2.5 0 1 1 2 4H2M9.8 4.4A2 2 0 1 1 11 8H2"/></symbol>
+<symbol id="leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10ZM2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+<symbol id="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+<symbol id="cal" viewBox="0 0 24 24"><path d="M8 2v4m8-4v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></symbol>
+<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
 </svg>
 
 <main>
@@ -105,25 +126,36 @@ textarea{width:100%;height:96px;background:none;border:0;color:#e9eef5;font:inhe
 </div>
 <div class="col">
   <section class="card">
-    <h3 class="lbl"><svg class="i"><use xlink:href="#news"/></svg>Actualités</h3>
-    <div id="tabs"></div>
-    <div id="news"><div class="empty">Chargement…</div></div>
+    <h3 class="lbl"><svg class="i"><use xlink:href="#clock"/></svg>Aujourd’hui</h3>
+    <div class="hrs" id="hours"></div>
+    <div id="stats"></div>
+    <div id="hol"></div>
   </section>
   <section class="card">
     <h3 class="lbl"><svg class="i"><use xlink:href="#music"/></svg>Musique</h3>
-    <div id="now">Aucune musique</div>
-    <input type="range" id="bar" min="0" max="1000" value="0">
-    <div class="ctl">
-      <button id="shuf"><svg class="i"><use xlink:href="#shuffle"/></svg></button>
-      <button id="prev"><svg class="i f"><use xlink:href="#prev"/></svg></button>
-      <button id="pp"></button>
-      <button id="next"><svg class="i f"><use xlink:href="#next"/></svg></button>
-      <button id="radio" style="font-size:26px"><svg class="i"><use xlink:href="#radio"/></svg></button>
+    <div>
+      <button class="chip on" id="tAM">Apple Music</button><button class="chip" id="tLoc">Fichiers &amp; radios</button><a class="chip" href="music://">Ouvrir l’app Musique</a>
     </div>
-    <div id="list"></div>
-    <label class="chip"><svg class="i"><use xlink:href="#plus"/></svg>Fichiers audio<input type="file" id="files" accept="audio/*" multiple style="display:none"></label>
-    <button class="chip" id="addradio"><svg class="i"><use xlink:href="#radio"/></svg>Ajouter une radio</button>
-    <audio id="au"></audio>
+    <div id="am">
+      <div id="pls"></div>
+      <iframe id="amf" allow="autoplay *; encrypted-media *; fullscreen *" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+      <div class="empty" id="amhelp">Dans l’app Musique : touchez ••• sur une playlist, puis Partager &gt; Copier le lien. Ici, touchez « + Playlist » et collez le lien. Connectez-vous une fois à Apple Music dans le lecteur pour écouter les titres en entier.</div>
+    </div>
+    <div id="loc" style="display:none">
+      <div id="now">Aucune musique</div>
+      <input type="range" id="bar" min="0" max="1000" value="0">
+      <div class="ctl">
+        <button id="shuf"><svg class="i"><use xlink:href="#shuffle"/></svg></button>
+        <button id="prev"><svg class="i f"><use xlink:href="#prev"/></svg></button>
+        <button id="pp"></button>
+        <button id="next"><svg class="i f"><use xlink:href="#next"/></svg></button>
+        <button id="radio" style="font-size:26px"><svg class="i"><use xlink:href="#radio"/></svg></button>
+      </div>
+      <div id="list"></div>
+      <label class="chip"><svg class="i"><use xlink:href="#plus"/></svg>Fichiers audio<input type="file" id="files" accept="audio/*" multiple style="display:none"></label>
+      <button class="chip" id="addradio"><svg class="i"><use xlink:href="#radio"/></svg>Ajouter une radio</button>
+      <audio id="au"></audio>
+    </div>
   </section>
 </div>
 </main>
@@ -155,7 +187,7 @@ function wxi(c){
 function loadWx(){
   $("city").innerHTML=ic("pin")+esc(LOC.name);
   var u="https://api.open-meteo.com/v1/forecast?latitude="+LOC.lat+"&longitude="+LOC.lon+
-    "&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=4";
+    "&current=temperature_2m,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=4";
   fetch(u).then(function(r){return r.json()}).then(function(j){
     var w=wxi(j.current.weather_code),D=j.daily;
     $("ico").innerHTML=ic(w[0]);$("temp").textContent=Math.round(j.current.temperature_2m)+"°";$("cond").textContent=w[1];
@@ -171,6 +203,7 @@ function loadWx(){
     else if(mx>=28)t=["drop","Journée chaude, pensez à boire"];
     else t=["ok","Rien de particulier, belle journée !"];
     $("tip").innerHTML=ic(t[0])+"<span>"+t[1]+"</span>";
+    renderToday(j);
   }).catch(function(){$("cond").textContent="Météo indisponible"});
 }
 $("city").onclick=function(){
@@ -183,84 +216,47 @@ $("city").onclick=function(){
 };
 loadWx();setInterval(loadWx,20*60000);
 
-/* Actualités (flux RSS via rss2json) */
-var FEEDS=[
-  {n:"Rouen",u:"https://news.google.com/rss/search?q=Rouen&hl=fr&gl=FR&ceid=FR:fr"},
-  {n:"France Info",u:"https://www.francetvinfo.fr/titres.rss"},
-  {n:"Le Monde",u:"https://www.lemonde.fr/rss/une.xml"}
-];
-var feedIdx=0;
-function allFeeds(){return FEEDS.concat(jget("feeds",[]))}
-function ago(t){
-  var m=Math.round((Date.now()-t)/60000);
-  if(isNaN(m))return"";if(m<60)return"il y a "+Math.max(m,1)+" min";
-  var h=Math.round(m/60);return h<24?"il y a "+h+" h":"il y a "+Math.round(h/24)+" j";
+/* Aujourd’hui : heures à venir, soleil, vent, UV, air, lune, jours fériés */
+function moon(){
+  var d=((Date.now()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853;if(d<0)d+=29.530588853;
+  return d<1.85?"Nouvelle lune":d<5.54?"Premier croissant":d<9.23?"Premier quartier":d<12.91?"Lune gibbeuse":d<16.61?"Pleine lune":d<20.3?"Lune gibbeuse":d<23.99?"Dernier quartier":d<27.68?"Dernier croissant":"Nouvelle lune";
 }
-function tabs(){
-  var f=allFeeds(),h="";
-  for(var i=0;i<f.length;i++)h+='<button class="chip'+(i===feedIdx?" on":"")+'" data-t="'+i+'">'+esc(f[i].n)+(i>=FEEDS.length?'<span data-fx="'+i+'" style="margin-left:8px">'+ic("x")+"</span>":"")+"</button>";
-  $("tabs").innerHTML=h+'<button class="chip" id="addfeed">'+ic("plus")+"Flux</button>";
+function easter(y){
+  var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+  h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451);
+  return new Date(y,Math.floor((h+l-7*m+114)/31)-1,(h+l-7*m+114)%31+1);
 }
-function tmo(p,ms){return new Promise(function(ok,ko){var t=setTimeout(function(){ko("timeout")},ms);p.then(function(v){clearTimeout(t);ok(v)},function(e){clearTimeout(t);ko(e)})})}
-function tx(n,t){var e=n.getElementsByTagName(t)[0];return e?e.textContent:""}
-function parseXml(x){
-  var d=new DOMParser().parseFromString(x,"text/xml"),n=d.getElementsByTagName("item"),o=[];
-  for(var i=0;i<n.length&&o.length<6;i++){
-    var en=n[i].getElementsByTagName("enclosure")[0],mc=n[i].getElementsByTagName("media:content")[0],im="";
-    if(en&&/image|\.(jpe?g|png|webp)/i.test((en.getAttribute("type")||"")+en.getAttribute("url")))im=en.getAttribute("url");
-    else if(mc)im=mc.getAttribute("url")||"";
-    else{var m=/<img[^>]+src=["']([^"']+)/i.exec(tx(n[i],"description"));if(m)im=m[1]}
-    o.push({t:tx(n[i],"title"),l:tx(n[i],"link"),i:im,d:new Date(tx(n[i],"pubDate")).getTime()});
+function hols(y){
+  var e=easter(y),f=function(n,t){return[new Date(y,e.getMonth(),e.getDate()+n),t]};
+  return[[new Date(y,0,1),"Jour de l’an"],f(1,"Lundi de Pâques"),[new Date(y,4,1),"Fête du Travail"],[new Date(y,4,8),"Victoire 1945"],
+   f(39,"Ascension"),f(50,"Lundi de Pentecôte"),[new Date(y,6,14),"Fête nationale"],[new Date(y,7,15),"Assomption"],
+   [new Date(y,10,1),"Toussaint"],[new Date(y,10,11),"Armistice"],[new Date(y,11,25),"Noël"]];
+}
+function setHol(){
+  var t=new Date();t.setHours(0,0,0,0);
+  var l=hols(t.getFullYear()).concat(hols(t.getFullYear()+1)),b=null;
+  for(var i=0;i<l.length;i++)if(l[i][0]>=t&&(!b||l[i][0]<b[0]))b=l[i];
+  var n=Math.round((b[0]-t)/864e5);
+  $("hol").innerHTML=ic("cal")+"<span>"+b[1]+(n===0?" : aujourd’hui":n===1?" : demain":" dans "+n+" jours")+"</span>";
+}
+function tile(i,v,l,id){return'<div class="st">'+ic(i)+"<b"+(id?' id="'+id+'"':"")+">"+v+"</b><span>"+l+"</span></div>"}
+function renderToday(j){
+  var H=j.hourly,D=j.daily,k=-1,ct=j.current.time.slice(0,13),h="";
+  for(var i=0;i<H.time.length;i++)if(H.time[i].slice(0,13)===ct){k=i;break}
+  if(k>=0)for(var n=k+1;n<=k+6&&n<H.time.length;n++){
+    h+='<div class="hr"><b>'+parseInt(H.time[n].slice(11,13),10)+" H</b>"+ic(wxi(H.weather_code[n])[0])+Math.round(H.temperature_2m[n])+"°<em>"+(H.precipitation_probability[n]||0)+" %</em></div>";
   }
-  if(!o.length)throw 0;return o;
+  $("hours").innerHTML=h;
+  $("stats").innerHTML=tile("sunrise",D.sunrise[0].slice(11,16).replace(":","h"),"Lever")+tile("sunset",D.sunset[0].slice(11,16).replace(":","h"),"Coucher")+
+    tile("wind",Math.round(j.current.wind_speed_10m)+" km/h","Vent")+tile("sun",Math.round(D.uv_index_max[0]),"Indice UV")+
+    tile("leaf","--","Air","airv")+tile("moon",moon(),"Lune");
+  fetch("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+LOC.lat+"&longitude="+LOC.lon+"&current=european_aqi")
+  .then(function(r){return r.json()}).then(function(a){
+    var v=a.current.european_aqi;
+    $("airv").textContent=v<=20?"Très bon":v<=40?"Bon":v<=60?"Moyen":v<=80?"Médiocre":v<=100?"Mauvais":"Très mauvais";
+  }).catch(function(){});
 }
-function viaJson(u){
-  return fetch("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(u)).then(function(r){return r.json()}).then(function(j){
-    if(j.status!=="ok"||!j.items.length)throw 0;
-    return j.items.slice(0,6).map(function(a){return{t:a.title,l:a.link,
-      i:a.thumbnail||(a.enclosure&&a.enclosure.link&&/\.(jpe?g|png|webp)/i.test(a.enclosure.link)?a.enclosure.link:""),
-      d:new Date(String(a.pubDate).replace(" ","T")+"Z").getTime()}});
-  });
-}
-function viaXml(p,u){return fetch(p+encodeURIComponent(u)).then(function(r){return r.text()}).then(parseXml)}
-function getFeed(u){
-  return tmo(viaJson(u),8000)
-   .catch(function(){return tmo(viaXml("https://api.allorigins.win/raw?url=",u),8000)})
-   .catch(function(){return tmo(viaXml("https://corsproxy.io/?url=",u),8000)});
-}
-function loadNews(){
-  $("news").innerHTML='<div class="empty">Chargement…</div>';
-  var idx=feedIdx,f=allFeeds()[idx];if(!f)return;
-  getFeed(f.u).then(function(it){
-    if(idx!==feedIdx)return;
-    var h="";
-    for(var i=0;i<it.length;i++){
-      var a=it[i],t=a.t,src="",k=t.lastIndexOf(" - ");
-      if(k>20){src=t.slice(k+3);t=t.slice(0,k)}
-      h+='<a class="art" target="_blank" rel="noopener" href="'+esc(a.l)+'">'+(a.i?'<img src="'+esc(a.i)+'" onerror="this.style.display=\'none\'">':"")+
-        '<div><div class="at">'+esc(t)+'</div><div class="am">'+esc(src?src+" · ":"")+ago(a.d)+"</div></div></a>";
-    }
-    $("news").innerHTML=h;
-  }).catch(function(){if(idx===feedIdx)$("news").innerHTML='<div class="empty">Actualités indisponibles pour le moment</div>'});
-}
-$("tabs").onclick=function(e){
-  var el=e.target;
-  while(el&&el!==this){
-    if(el.getAttribute){
-      var x=el.getAttribute("data-fx");
-      if(x!==null){var c=jget("feeds",[]);c.splice(+x-FEEDS.length,1);store("feeds",JSON.stringify(c));feedIdx=0;tabs();loadNews();return}
-      if(el.id==="addfeed"){
-        var n=prompt("Nom du flux ?"),u=n&&prompt("Adresse du flux RSS (https://…)");
-        if(n&&u){var c2=jget("feeds",[]);c2.push({n:n,u:u});store("feeds",JSON.stringify(c2));feedIdx=FEEDS.length+c2.length-1;tabs();loadNews()}
-        return;
-      }
-      var t=el.getAttribute("data-t");
-      if(t!==null){feedIdx=+t;tabs();loadNews();return}
-    }
-    el=el.parentNode;
-  }
-};
-tabs();loadNews();setInterval(loadNews,15*60000);
+setHol();setInterval(setHol,3600000);
 
 /* Musique : fichiers de l’iPad + radios (flux web) */
 var au=$("au"),files=[],items=[],cur=-1,shuf=false;
@@ -308,6 +304,46 @@ $("list").onclick=function(e){
   }
 };
 build();
+
+/* Apple Music : lecteur intégré (playlists, albums) */
+var plIdx=-1;
+function pls(){return jget("pls",[])}
+function renderPls(){
+  var p=pls(),h="";
+  for(var i=0;i<p.length;i++)h+='<button class="chip'+(i===plIdx?" on":"")+'" data-a="'+i+'">'+esc(p[i].n)+'<span data-ax="'+i+'" style="margin-left:8px">'+ic("x")+"</span></button>";
+  $("pls").innerHTML=h+'<button class="chip" id="addpl">'+ic("plus")+"Playlist</button>";
+  $("amhelp").style.display=plIdx<0?"block":"none";
+}
+function selPl(i){
+  var p=pls();plIdx=i;store("plIdx",String(i));
+  var f=$("amf");
+  if(i>=0&&p[i]){if(f.getAttribute("data-u")!==p[i].u){f.src=p[i].u;f.setAttribute("data-u",p[i].u)}f.style.display="block"}
+  else{f.style.display="none";f.src="about:blank";f.removeAttribute("data-u")}
+  renderPls();
+}
+$("pls").onclick=function(e){
+  var el=e.target;
+  while(el&&el!==this){
+    if(el.getAttribute){
+      var x=el.getAttribute("data-ax");
+      if(x!==null){var p=pls();p.splice(+x,1);store("pls",JSON.stringify(p));selPl(-1);return}
+      if(el.id==="addpl"){
+        var n=prompt("Nom de la playlist ?");if(!n)return;
+        var u=prompt("Collez le lien Apple Music (Partager > Copier le lien)");if(!u)return;
+        if(u.indexOf("music.apple.com")<0){alert("Ce n’est pas un lien Apple Music");return}
+        u=u.replace(/^\s+|\s+$/g,"").replace("//music.apple.com","//embed.music.apple.com");
+        var q=pls();q.push({n:n,u:u});store("pls",JSON.stringify(q));selPl(q.length-1);return;
+      }
+      var a=el.getAttribute("data-a");
+      if(a!==null){selPl(+a);return}
+    }
+    el=el.parentNode;
+  }
+};
+$("tAM").onclick=function(){$("am").style.display="block";$("loc").style.display="none";this.className="chip on";$("tLoc").className="chip"};
+$("tLoc").onclick=function(){$("am").style.display="none";$("loc").style.display="block";this.className="chip on";$("tAM").className="chip"};
+renderPls();
+(function(){var p=pls(),i=parseInt(store("plIdx"),10);if(p.length)selPl(i>=0&&i<p.length?i:0)})();
 
 /* Mémo */
 $("memo").value=store("memo")||"";
