@@ -68,8 +68,17 @@ textarea{width:100%;height:96px;background:none;border:0;color:#e9eef5;font:inhe
 .st span{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#7d8da3}
 #hol{display:flex;align-items:center;margin-top:16px;font-size:17px;color:#c9d4e3}
 #hol .i{margin-right:10px;color:#8cc8ff;font-size:22px}
-#amf{width:100%;height:380px;border:0;border-radius:14px;display:none;margin-top:6px}
+#amf{width:100%;height:460px;border:0;border-radius:14px;display:none;margin-top:6px}
 a.chip{text-decoration:none}
+#trow{display:flex;align-items:center;margin-bottom:8px}
+#tin{flex:1;min-width:0;background:rgba(255,255,255,.06);border:0;border-radius:14px;color:#e9eef5;font:inherit;font-size:18px;padding:13px 15px;outline:0}
+#tadd{font-size:22px;margin-left:10px;width:46px;height:46px;border-radius:50%;background:#8cc8ff;color:#0a1422;flex:none}
+.tk{display:flex;align-items:center;padding:13px 2px;border-top:1px solid rgba(255,255,255,.06);font-size:20px}
+.tk .i{font-size:26px;color:#7d8da3;margin-right:14px;flex:none}
+.tk span{flex:1;min-width:0;word-wrap:break-word}
+.tk b{padding-left:14px;color:#566378;font-weight:400}
+.tk.done span{text-decoration:line-through;color:#6a788c}
+.tk.done .i{color:#8cc8ff}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-17.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
@@ -95,6 +104,7 @@ a.chip{text-decoration:none}
 <symbol id="news" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2M18 14h-8m5 4h-5M10 6h8v4h-8z"/></symbol>
 <symbol id="music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
 <symbol id="note" viewBox="0 0 24 24"><path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5zM15 3v6h6"/></symbol>
+<symbol id="circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol>
 <symbol id="x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
 <symbol id="sunrise" viewBox="0 0 24 24"><path d="M12 2v8m-7.07.93 1.41 1.41M2 18h2m16 0h2m-2.93-7.07-1.41 1.41M22 22H2M8 6l4-4 4 4M16 18a4 4 0 0 0-8 0"/></symbol>
 <symbol id="sunset" viewBox="0 0 24 24"><path d="M12 10V2m-7.07 8.93 1.41 1.41M2 18h2m16 0h2m-2.93-7.07-1.41 1.41M22 22H2m14-16-4 4-4-4M16 18a4 4 0 0 0-8 0"/></symbol>
@@ -120,42 +130,19 @@ a.chip{text-decoration:none}
     <div id="tip"></div>
   </section>
   <section class="card">
-    <h3 class="lbl"><svg class="i"><use xlink:href="#note"/></svg>Mémo</h3>
-    <textarea id="memo" placeholder="Courses, rendez-vous, un mot pour la famille…"></textarea>
+    <h3 class="lbl"><svg class="i"><use xlink:href="#ok"/></svg>Tâches</h3>
+    <div id="trow"><input id="tin" type="text" placeholder="Nouvelle tâche…" autocomplete="off"><button id="tadd"><svg class="i"><use xlink:href="#plus"/></svg></button></div>
+    <div id="tasks"></div>
+    <button class="chip" id="tclr" style="display:none;margin-top:12px">Effacer les tâches faites</button>
   </section>
 </div>
 <div class="col">
   <section class="card">
-    <h3 class="lbl"><svg class="i"><use xlink:href="#clock"/></svg>Aujourd’hui</h3>
-    <div class="hrs" id="hours"></div>
-    <div id="stats"></div>
-    <div id="hol"></div>
-  </section>
-  <section class="card">
-    <h3 class="lbl"><svg class="i"><use xlink:href="#music"/></svg>Musique</h3>
-    <div>
-      <button class="chip on" id="tAM">Apple Music</button><button class="chip" id="tLoc">Fichiers &amp; radios</button><a class="chip" href="music://">Ouvrir l’app Musique</a>
-    </div>
-    <div id="am">
-      <div id="pls"></div>
-      <iframe id="amf" allow="autoplay *; encrypted-media *; fullscreen *" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
-      <div class="empty" id="amhelp">Dans l’app Musique : touchez ••• sur une playlist, puis Partager &gt; Copier le lien. Ici, touchez « + Playlist » et collez le lien. Connectez-vous une fois à Apple Music dans le lecteur pour écouter les titres en entier.</div>
-    </div>
-    <div id="loc" style="display:none">
-      <div id="now">Aucune musique</div>
-      <input type="range" id="bar" min="0" max="1000" value="0">
-      <div class="ctl">
-        <button id="shuf"><svg class="i"><use xlink:href="#shuffle"/></svg></button>
-        <button id="prev"><svg class="i f"><use xlink:href="#prev"/></svg></button>
-        <button id="pp"></button>
-        <button id="next"><svg class="i f"><use xlink:href="#next"/></svg></button>
-        <button id="radio" style="font-size:26px"><svg class="i"><use xlink:href="#radio"/></svg></button>
-      </div>
-      <div id="list"></div>
-      <label class="chip"><svg class="i"><use xlink:href="#plus"/></svg>Fichiers audio<input type="file" id="files" accept="audio/*" multiple style="display:none"></label>
-      <button class="chip" id="addradio"><svg class="i"><use xlink:href="#radio"/></svg>Ajouter une radio</button>
-      <audio id="au"></audio>
-    </div>
+    <h3 class="lbl"><svg class="i"><use xlink:href="#music"/></svg>Apple Music</h3>
+    <div id="pls"></div>
+    <iframe id="amf" allow="autoplay *; encrypted-media *; fullscreen *" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
+    <div class="empty" id="amhelp">Dans l’app Musique : touchez ••• sur une playlist, puis Partager &gt; Copier le lien. Ici, touchez « + Playlist » et collez le lien. Connectez-vous une fois à Apple Music dans le lecteur pour écouter les titres en entier.</div>
+    <a class="chip" href="music://" style="margin-top:12px">Ouvrir l’app Musique</a>
   </section>
 </div>
 </main>
@@ -203,7 +190,6 @@ function loadWx(){
     else if(mx>=28)t=["drop","Journée chaude, pensez à boire"];
     else t=["ok","Rien de particulier, belle journée !"];
     $("tip").innerHTML=ic(t[0])+"<span>"+t[1]+"</span>";
-    renderToday(j);
   }).catch(function(){$("cond").textContent="Météo indisponible"});
 }
 $("city").onclick=function(){
@@ -215,95 +201,6 @@ $("city").onclick=function(){
   }).catch(function(){alert("Réseau indisponible")});
 };
 loadWx();setInterval(loadWx,20*60000);
-
-/* Aujourd’hui : heures à venir, soleil, vent, UV, air, lune, jours fériés */
-function moon(){
-  var d=((Date.now()-Date.UTC(2000,0,6,18,14))/864e5)%29.530588853;if(d<0)d+=29.530588853;
-  return d<1.85?"Nouvelle lune":d<5.54?"Premier croissant":d<9.23?"Premier quartier":d<12.91?"Lune gibbeuse":d<16.61?"Pleine lune":d<20.3?"Lune gibbeuse":d<23.99?"Dernier quartier":d<27.68?"Dernier croissant":"Nouvelle lune";
-}
-function easter(y){
-  var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
-  h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451);
-  return new Date(y,Math.floor((h+l-7*m+114)/31)-1,(h+l-7*m+114)%31+1);
-}
-function hols(y){
-  var e=easter(y),f=function(n,t){return[new Date(y,e.getMonth(),e.getDate()+n),t]};
-  return[[new Date(y,0,1),"Jour de l’an"],f(1,"Lundi de Pâques"),[new Date(y,4,1),"Fête du Travail"],[new Date(y,4,8),"Victoire 1945"],
-   f(39,"Ascension"),f(50,"Lundi de Pentecôte"),[new Date(y,6,14),"Fête nationale"],[new Date(y,7,15),"Assomption"],
-   [new Date(y,10,1),"Toussaint"],[new Date(y,10,11),"Armistice"],[new Date(y,11,25),"Noël"]];
-}
-function setHol(){
-  var t=new Date();t.setHours(0,0,0,0);
-  var l=hols(t.getFullYear()).concat(hols(t.getFullYear()+1)),b=null;
-  for(var i=0;i<l.length;i++)if(l[i][0]>=t&&(!b||l[i][0]<b[0]))b=l[i];
-  var n=Math.round((b[0]-t)/864e5);
-  $("hol").innerHTML=ic("cal")+"<span>"+b[1]+(n===0?" : aujourd’hui":n===1?" : demain":" dans "+n+" jours")+"</span>";
-}
-function tile(i,v,l,id){return'<div class="st">'+ic(i)+"<b"+(id?' id="'+id+'"':"")+">"+v+"</b><span>"+l+"</span></div>"}
-function renderToday(j){
-  var H=j.hourly,D=j.daily,k=-1,ct=j.current.time.slice(0,13),h="";
-  for(var i=0;i<H.time.length;i++)if(H.time[i].slice(0,13)===ct){k=i;break}
-  if(k>=0)for(var n=k+1;n<=k+6&&n<H.time.length;n++){
-    h+='<div class="hr"><b>'+parseInt(H.time[n].slice(11,13),10)+" H</b>"+ic(wxi(H.weather_code[n])[0])+Math.round(H.temperature_2m[n])+"°<em>"+(H.precipitation_probability[n]||0)+" %</em></div>";
-  }
-  $("hours").innerHTML=h;
-  $("stats").innerHTML=tile("sunrise",D.sunrise[0].slice(11,16).replace(":","h"),"Lever")+tile("sunset",D.sunset[0].slice(11,16).replace(":","h"),"Coucher")+
-    tile("wind",Math.round(j.current.wind_speed_10m)+" km/h","Vent")+tile("sun",Math.round(D.uv_index_max[0]),"Indice UV")+
-    tile("leaf","--","Air","airv")+tile("moon",moon(),"Lune");
-  fetch("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+LOC.lat+"&longitude="+LOC.lon+"&current=european_aqi")
-  .then(function(r){return r.json()}).then(function(a){
-    var v=a.current.european_aqi;
-    $("airv").textContent=v<=20?"Très bon":v<=40?"Bon":v<=60?"Moyen":v<=80?"Médiocre":v<=100?"Mauvais":"Très mauvais";
-  }).catch(function(){});
-}
-setHol();setInterval(setHol,3600000);
-
-/* Musique : fichiers de l’iPad + radios (flux web) */
-var au=$("au"),files=[],items=[],cur=-1,shuf=false;
-function radios(){return jget("radios",[])}
-function build(){
-  items=radios().map(function(r){return{n:r.n,s:r.u,r:1}}).concat(files);
-  var h="";
-  for(var i=0;i<items.length;i++){
-    h+='<div class="it'+(i===cur?" on":"")+'" data-p="'+i+'">'+ic(items[i].r?"radio":"music")+esc(items[i].n)+(items[i].r?'<span class="x" data-x="'+i+'">'+ic("x")+"</span>":"")+"</div>";
-  }
-  $("list").innerHTML=h;
-  $("now").textContent=cur>=0&&items[cur]?items[cur].n:"Aucune musique";
-}
-function play(i){if(!items[i])return;cur=i;au.src=items[i].s;au.play();build()}
-function nxt(d){
-  if(!items.length)return;
-  play(shuf?Math.floor(Math.random()*items.length):(cur+d+items.length)%items.length);
-}
-$("pp").innerHTML=ic("play","f");
-$("pp").onclick=function(){if(cur<0){play(0)}else if(au.paused){au.play()}else{au.pause()}};
-$("next").onclick=function(){nxt(1)};$("prev").onclick=function(){nxt(-1)};
-$("shuf").onclick=function(){shuf=!shuf;this.className=shuf?"on":""};
-$("radio").onclick=function(){$("addradio").click()};
-au.onplay=function(){$("pp").innerHTML=ic("pause","f")};au.onpause=function(){$("pp").innerHTML=ic("play","f")};
-au.onended=function(){nxt(1)};
-au.ontimeupdate=function(){if(isFinite(au.duration)&&au.duration>0)$("bar").value=au.currentTime/au.duration*1000};
-$("bar").oninput=function(){if(isFinite(au.duration))au.currentTime=au.duration*this.value/1000};
-$("files").onchange=function(){
-  for(var i=0;i<this.files.length;i++){var f=this.files[i];files.push({n:f.name.replace(/\.[^.]+$/,""),s:URL.createObjectURL(f)})}
-  build();if(cur<0)play(0);
-};
-$("addradio").onclick=function(){
-  var n=prompt("Nom de la radio ?");if(!n)return;
-  var u=prompt("Adresse du flux (https://…)");if(!u)return;
-  var r=radios();r.push({n:n,u:u});store("radios",JSON.stringify(r));build();
-};
-$("list").onclick=function(e){
-  var el=e.target;
-  while(el&&el!==this){
-    var x=el.getAttribute&&el.getAttribute("data-x");
-    if(x){var r=radios();r.splice(+x,1);store("radios",JSON.stringify(r));cur=-1;au.pause();build();return}
-    var p=el.getAttribute&&el.getAttribute("data-p");
-    if(p!==null&&p!==undefined){play(+p);return}
-    el=el.parentNode;
-  }
-};
-build();
 
 /* Apple Music : lecteur intégré (playlists, albums) */
 var plIdx=-1;
@@ -340,14 +237,41 @@ $("pls").onclick=function(e){
     el=el.parentNode;
   }
 };
-$("tAM").onclick=function(){$("am").style.display="block";$("loc").style.display="none";this.className="chip on";$("tLoc").className="chip"};
-$("tLoc").onclick=function(){$("am").style.display="none";$("loc").style.display="block";this.className="chip on";$("tAM").className="chip"};
 renderPls();
 (function(){var p=pls(),i=parseInt(store("plIdx"),10);if(p.length)selPl(i>=0&&i<p.length?i:0)})();
 
-/* Mémo */
-$("memo").value=store("memo")||"";
-$("memo").oninput=function(){store("memo",this.value)};
+/* Tâches à cocher */
+function tasks(){return jget("tasks",[])}
+function saveT(t){store("tasks",JSON.stringify(t))}
+function renderT(){
+  var t=tasks(),h="",dn=0;
+  for(var i=0;i<t.length;i++){
+    if(t[i].d)dn++;
+    h+='<div class="tk'+(t[i].d?" done":"")+'" data-k="'+i+'">'+ic(t[i].d?"ok":"circle")+"<span>"+esc(t[i].t)+'</span><b data-d="'+i+'">'+ic("x")+"</b></div>";
+  }
+  $("tasks").innerHTML=h||'<div class="empty">Rien à faire pour l’instant</div>';
+  $("tclr").style.display=dn?"inline-flex":"none";
+}
+function addT(){
+  var v=$("tin").value.replace(/^\s+|\s+$/g,"");if(!v)return;
+  var t=tasks();t.push({t:v,d:0});saveT(t);$("tin").value="";renderT();
+}
+$("tadd").onclick=addT;
+$("tin").onkeydown=function(e){if(e.keyCode===13)addT()};
+$("tclr").onclick=function(){saveT(tasks().filter(function(x){return!x.d}));renderT()};
+$("tasks").onclick=function(e){
+  var el=e.target;
+  while(el&&el!==this){
+    if(el.getAttribute){
+      var d=el.getAttribute("data-d");
+      if(d!==null){var t=tasks();t.splice(+d,1);saveT(t);renderT();return}
+      var k=el.getAttribute("data-k");
+      if(k!==null){var u=tasks();u[+k].d=u[+k].d?0:1;saveT(u);renderT();return}
+    }
+    el=el.parentNode;
+  }
+};
+renderT();
 
 /* Garder l’écran allumé si possible */
 function wake(){try{navigator.wakeLock&&navigator.wakeLock.request("screen")}catch(e){}}
