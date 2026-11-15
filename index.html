@@ -191,8 +191,8 @@ var FEEDS=[
 ];
 var feedIdx=0;
 function allFeeds(){return FEEDS.concat(jget("feeds",[]))}
-function ago(s){
-  var m=Math.round((Date.now()-new Date(String(s).replace(" ","T")+"Z").getTime())/60000);
+function ago(t){
+  var m=Math.round((Date.now()-t)/60000);
   if(isNaN(m))return"";if(m<60)return"il y a "+Math.max(m,1)+" min";
   var h=Math.round(m/60);return h<24?"il y a "+h+" h":"il y a "+Math.round(h/24)+" j";
 }
@@ -201,20 +201,47 @@ function tabs(){
   for(var i=0;i<f.length;i++)h+='<button class="chip'+(i===feedIdx?" on":"")+'" data-t="'+i+'">'+esc(f[i].n)+(i>=FEEDS.length?'<span data-fx="'+i+'" style="margin-left:8px">'+ic("x")+"</span>":"")+"</button>";
   $("tabs").innerHTML=h+'<button class="chip" id="addfeed">'+ic("plus")+"Flux</button>";
 }
+function tmo(p,ms){return new Promise(function(ok,ko){var t=setTimeout(function(){ko("timeout")},ms);p.then(function(v){clearTimeout(t);ok(v)},function(e){clearTimeout(t);ko(e)})})}
+function tx(n,t){var e=n.getElementsByTagName(t)[0];return e?e.textContent:""}
+function parseXml(x){
+  var d=new DOMParser().parseFromString(x,"text/xml"),n=d.getElementsByTagName("item"),o=[];
+  for(var i=0;i<n.length&&o.length<6;i++){
+    var en=n[i].getElementsByTagName("enclosure")[0],mc=n[i].getElementsByTagName("media:content")[0],im="";
+    if(en&&/image|\.(jpe?g|png|webp)/i.test((en.getAttribute("type")||"")+en.getAttribute("url")))im=en.getAttribute("url");
+    else if(mc)im=mc.getAttribute("url")||"";
+    else{var m=/<img[^>]+src=["']([^"']+)/i.exec(tx(n[i],"description"));if(m)im=m[1]}
+    o.push({t:tx(n[i],"title"),l:tx(n[i],"link"),i:im,d:new Date(tx(n[i],"pubDate")).getTime()});
+  }
+  if(!o.length)throw 0;return o;
+}
+function viaJson(u){
+  return fetch("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(u)).then(function(r){return r.json()}).then(function(j){
+    if(j.status!=="ok"||!j.items.length)throw 0;
+    return j.items.slice(0,6).map(function(a){return{t:a.title,l:a.link,
+      i:a.thumbnail||(a.enclosure&&a.enclosure.link&&/\.(jpe?g|png|webp)/i.test(a.enclosure.link)?a.enclosure.link:""),
+      d:new Date(String(a.pubDate).replace(" ","T")+"Z").getTime()}});
+  });
+}
+function viaXml(p,u){return fetch(p+encodeURIComponent(u)).then(function(r){return r.text()}).then(parseXml)}
+function getFeed(u){
+  return tmo(viaJson(u),8000)
+   .catch(function(){return tmo(viaXml("https://api.allorigins.win/raw?url=",u),8000)})
+   .catch(function(){return tmo(viaXml("https://corsproxy.io/?url=",u),8000)});
+}
 function loadNews(){
-  var f=allFeeds()[feedIdx];if(!f)return;
-  fetch("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(f.u)).then(function(r){return r.json()}).then(function(j){
-    if(j.status!=="ok")throw 0;
-    var h="",it=j.items.slice(0,6);
+  $("news").innerHTML='<div class="empty">Chargement…</div>';
+  var idx=feedIdx,f=allFeeds()[idx];if(!f)return;
+  getFeed(f.u).then(function(it){
+    if(idx!==feedIdx)return;
+    var h="";
     for(var i=0;i<it.length;i++){
-      var a=it[i],t=a.title,src=j.feed&&j.feed.title?"":"",k=t.lastIndexOf(" - ");
+      var a=it[i],t=a.t,src="",k=t.lastIndexOf(" - ");
       if(k>20){src=t.slice(k+3);t=t.slice(0,k)}
-      var im=a.thumbnail||(a.enclosure&&a.enclosure.link&&/\.(jpe?g|png|webp)/i.test(a.enclosure.link)?a.enclosure.link:"");
-      h+='<a class="art" target="_blank" rel="noopener" href="'+esc(a.link)+'">'+(im?'<img src="'+esc(im)+'" onerror="this.style.display=\'none\'">':"")+
-        '<div><div class="at">'+esc(t)+'</div><div class="am">'+esc(src?src+" · ":"")+ago(a.pubDate)+"</div></div></a>";
+      h+='<a class="art" target="_blank" rel="noopener" href="'+esc(a.l)+'">'+(a.i?'<img src="'+esc(a.i)+'" onerror="this.style.display=\'none\'">':"")+
+        '<div><div class="at">'+esc(t)+'</div><div class="am">'+esc(src?src+" · ":"")+ago(a.d)+"</div></div></a>";
     }
-    $("news").innerHTML=h||'<div class="empty">Aucun article</div>';
-  }).catch(function(){$("news").innerHTML='<div class="empty">Actualités indisponibles pour le moment</div>'});
+    $("news").innerHTML=h;
+  }).catch(function(){if(idx===feedIdx)$("news").innerHTML='<div class="empty">Actualités indisponibles pour le moment</div>'});
 }
 $("tabs").onclick=function(e){
   var el=e.target;
